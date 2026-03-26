@@ -51,7 +51,9 @@ const LoginLogo = ({ variant = "light" }: { variant?: "light" | "dark" }) => {
         }`}
       >
         <span className={isDark ? "text-[#145A41]" : "text-white"}>Golf</span>
-        <span className={isDark ? "text-[#D4AF37]" : "text-[#FFD95A]"}>Give</span>
+        <span className={isDark ? "text-[#D4AF37]" : "text-[#FFD95A]"}>
+          Give
+        </span>
       </span>
     </div>
   );
@@ -68,7 +70,10 @@ export function Auth() {
   const location = useLocation();
   const { signIn, signUp } = useAuth();
   const redirectTo =
-    typeof location.state?.from === "string" ? location.state.from : "/dashboard";
+    typeof location.state?.from === "string"
+      ? location.state.from
+      : "/dashboard";
+  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase();
 
   const authSchema = useMemo(
     () =>
@@ -76,9 +81,7 @@ export function Auth() {
         .object({
           fullName: z.string().trim(),
           email: z.email("Invalid email format"),
-          password: z
-            .string()
-            .min(8, "Password must be at least 8 characters"),
+          password: z.string().min(8, "Password must be at least 8 characters"),
           confirmPassword: z.string(),
           terms: z.boolean(),
         })
@@ -151,7 +154,10 @@ export function Auth() {
           return;
         }
 
-        navigate(redirectTo, { replace: true });
+        const isAdminLogin =
+          Boolean(adminEmail) && values.email.toLowerCase() === adminEmail;
+
+        navigate(isAdminLogin ? "/admin" : redirectTo, { replace: true });
         return;
       }
 
@@ -178,7 +184,9 @@ export function Auth() {
       });
     } catch (authError) {
       const message =
-        authError instanceof Error ? authError.message : "Authentication failed.";
+        authError instanceof Error
+          ? authError.message
+          : "Authentication failed.";
       setFeedback({
         kind: "error",
         message,
@@ -190,9 +198,17 @@ export function Auth() {
     <div className="min-h-screen flex w-full bg-gray-50">
       <div className="hidden lg:flex flex-1 flex-col justify-between bg-gradient-to-br from-[#0B3D2E] to-[#145A41] p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.06]">
-          <svg className="absolute w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            className="absolute w-full h-full"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <defs>
-              <pattern id="dot-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+              <pattern
+                id="dot-grid"
+                width="24"
+                height="24"
+                patternUnits="userSpaceOnUse"
+              >
                 <circle cx="2" cy="2" r="1" fill="white" />
               </pattern>
             </defs>
@@ -216,7 +232,8 @@ export function Auth() {
               Every round can create real impact
             </h1>
             <p className="mt-5 max-w-lg text-base text-white/75 font-medium leading-relaxed">
-              Join GolfGive to track your progress, unlock member rewards, and support charitable causes through the game you already love.
+              Join GolfGive to track your progress, unlock member rewards, and
+              support charitable causes through the game you already love.
             </p>
 
             <div className="mt-10 grid gap-4">
@@ -225,9 +242,12 @@ export function Auth() {
                   <TrendingUp className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-white">Track your golf journey</p>
+                  <p className="text-sm font-bold text-white">
+                    Track your golf journey
+                  </p>
                   <p className="mt-1 text-sm font-medium text-white/60">
-                    Keep up with scores, draws, and membership activity from one place.
+                    Keep up with scores, draws, and membership activity from one
+                    place.
                   </p>
                 </div>
               </div>
@@ -237,9 +257,12 @@ export function Auth() {
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-white">Play with purpose</p>
+                  <p className="text-sm font-bold text-white">
+                    Play with purpose
+                  </p>
                   <p className="mt-1 text-sm font-medium text-white/60">
-                    Support meaningful initiatives while enjoying rewards, community, and competition.
+                    Support meaningful initiatives while enjoying rewards,
+                    community, and competition.
                   </p>
                 </div>
               </div>
@@ -270,7 +293,9 @@ export function Auth() {
         <div className="w-full max-w-md mt-16 lg:mt-0">
           <div className="mb-8">
             <h2 className="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">
-              {mode === "login" ? "Sign in to GolfGive" : "Create your GolfGive account"}
+              {mode === "login"
+                ? "Sign in to GolfGive"
+                : "Create your GolfGive account"}
             </h2>
             <p className="text-gray-500 font-medium">
               {mode === "login"
@@ -287,7 +312,9 @@ export function Auth() {
                   : "border-emerald-200 bg-emerald-50 text-emerald-900"
               }`}
             >
-              <AlertTitle>{feedback.kind === "error" ? "Authentication error" : "Success"}</AlertTitle>
+              <AlertTitle>
+                {feedback.kind === "error" ? "Authentication error" : "Success"}
+              </AlertTitle>
               <AlertDescription>{feedback.message}</AlertDescription>
             </Alert>
           ) : null}
@@ -295,7 +322,10 @@ export function Auth() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {mode === "signup" ? (
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-sm font-bold text-gray-700">
+                <Label
+                  htmlFor="fullName"
+                  className="text-sm font-bold text-gray-700"
+                >
                   Full Name
                 </Label>
                 <Input
@@ -305,13 +335,18 @@ export function Auth() {
                   {...register("fullName")}
                 />
                 {errors.fullName ? (
-                  <p className="text-xs font-bold text-red-500">{errors.fullName.message}</p>
+                  <p className="text-xs font-bold text-red-500">
+                    {errors.fullName.message}
+                  </p>
                 ) : null}
               </div>
             ) : null}
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-bold text-gray-700">
+              <Label
+                htmlFor="email"
+                className="text-sm font-bold text-gray-700"
+              >
                 Email Address
               </Label>
               <Input
@@ -322,12 +357,17 @@ export function Auth() {
                 {...register("email")}
               />
               {errors.email ? (
-                <p className="text-xs font-bold text-red-500">{errors.email.message}</p>
+                <p className="text-xs font-bold text-red-500">
+                  {errors.email.message}
+                </p>
               ) : null}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-bold text-gray-700">
+              <Label
+                htmlFor="password"
+                className="text-sm font-bold text-gray-700"
+              >
                 Password
               </Label>
               <div className="relative">
@@ -343,18 +383,27 @@ export function Auth() {
                   onClick={() => setShowPassword((current) => !current)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
               {errors.password ? (
-                <p className="text-xs font-bold text-red-500">{errors.password.message}</p>
+                <p className="text-xs font-bold text-red-500">
+                  {errors.password.message}
+                </p>
               ) : null}
             </div>
 
             {mode === "signup" ? (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-sm font-bold text-gray-700">
+                  <Label
+                    htmlFor="confirmPassword"
+                    className="text-sm font-bold text-gray-700"
+                  >
                     Confirm Password
                   </Label>
                   <Input
@@ -379,17 +428,26 @@ export function Auth() {
                       <Checkbox
                         id="terms"
                         checked={field.value}
-                        onCheckedChange={(checked) => field.onChange(Boolean(checked))}
-                        className={errors.terms ? "border-red-500 mt-0.5" : "mt-0.5"}
+                        onCheckedChange={(checked) =>
+                          field.onChange(Boolean(checked))
+                        }
+                        className={
+                          errors.terms ? "border-red-500 mt-0.5" : "mt-0.5"
+                        }
                       />
                     )}
                   />
                   <div className="grid gap-1.5 leading-none">
-                    <label htmlFor="terms" className="text-sm font-medium text-gray-600">
+                    <label
+                      htmlFor="terms"
+                      className="text-sm font-medium text-gray-600"
+                    >
                       I agree to the terms and privacy policy.
                     </label>
                     {errors.terms ? (
-                      <p className="text-xs font-bold text-red-500">{errors.terms.message}</p>
+                      <p className="text-xs font-bold text-red-500">
+                        {errors.terms.message}
+                      </p>
                     ) : null}
                   </div>
                 </div>
@@ -416,7 +474,9 @@ export function Auth() {
 
           <div className="mt-8 text-center">
             <p className="text-gray-600 text-sm font-medium">
-              {mode === "login" ? "New to GolfGive?" : "Already have an account?"}{" "}
+              {mode === "login"
+                ? "New to GolfGive?"
+                : "Already have an account?"}{" "}
               <button
                 onClick={toggleMode}
                 className="text-[#145A41] font-bold hover:text-[#0B3D2E] transition-colors hover:underline"

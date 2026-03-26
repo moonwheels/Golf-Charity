@@ -36,6 +36,7 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
@@ -91,6 +92,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const user = session?.user ?? null;
+  const isAdminEmail =
+    Boolean(adminEmail) && user?.email?.toLowerCase() === adminEmail;
 
   useEffect(() => {
     if (!user?.id) {
@@ -118,7 +121,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [user?.id]);
 
-  const role = profile?.role ?? "member";
+  const role: AppRole =
+    profile?.role === "admin" || isAdminEmail ? "admin" : "member";
   const isAdmin = role === "admin";
   const value: AuthContextValue = {
     session,
