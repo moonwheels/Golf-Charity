@@ -31,6 +31,21 @@ VITE_SUPABASE_ANON_KEY=your-public-anon-key
 npm run dev
 ```
 
+## Deploy To Vercel
+
+1. Import the GitHub repo into Vercel.
+2. Keep the detected framework as `Vite`.
+3. Set these environment variables in Vercel for Production, Preview, and Development:
+
+```env
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your-public-anon-key
+```
+
+4. Deploy.
+
+This repo includes `vercel.json` so React Router routes like `/auth`, `/dashboard`, and `/admin` resolve correctly on refresh.
+
 ## Auth and Roles
 
 - Standard authenticated users can access `/dashboard/*`
