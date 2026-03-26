@@ -13,6 +13,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import { appEnv } from "../../config/env";
 import { useAuth } from "../../hooks/useAuth";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
@@ -73,7 +74,7 @@ export function Auth() {
     typeof location.state?.from === "string"
       ? location.state.from
       : "/dashboard";
-  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase();
+  const adminEmail = appEnv.adminEmail;
 
   const authSchema = useMemo(
     () =>

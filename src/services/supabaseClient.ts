@@ -1,7 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
+import { appEnv } from "../config/env";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = appEnv.supabaseUrl;
+const supabaseAnonKey = appEnv.supabaseAnonKey;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(

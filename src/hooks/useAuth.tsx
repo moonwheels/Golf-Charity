@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import type { RealtimeChannel, Session, User } from "@supabase/supabase-js";
+import { appEnv } from "../config/env";
 import {
   fetchProfile,
   type AppRole,
@@ -36,7 +37,7 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase();
+const adminEmail = appEnv.adminEmail;
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
