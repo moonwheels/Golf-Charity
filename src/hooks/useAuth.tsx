@@ -6,7 +6,6 @@ import {
   type ReactNode,
 } from "react";
 import type { RealtimeChannel, Session, User } from "@supabase/supabase-js";
-import { appEnv } from "../config/env";
 import {
   fetchProfile,
   type AppRole,
@@ -37,7 +36,6 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-const adminEmail = appEnv.adminEmail;
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
@@ -93,8 +91,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const user = session?.user ?? null;
-  const isAdminEmail =
-    Boolean(adminEmail) && user?.email?.toLowerCase() === adminEmail;
 
   useEffect(() => {
     if (!user?.id) {
@@ -122,8 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [user?.id]);
 
-  const role: AppRole =
-    profile?.role === "admin" || isAdminEmail ? "admin" : "member";
+  const role: AppRole = profile?.role === "admin" ? "admin" : "member";
   const isAdmin = role === "admin";
   const value: AuthContextValue = {
     session,
