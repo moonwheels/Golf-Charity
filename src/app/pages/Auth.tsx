@@ -9,6 +9,7 @@ import {
   Eye,
   EyeOff,
   Loader2,
+  Shield,
   ShieldCheck,
   TrendingUp,
   Users,
@@ -23,6 +24,7 @@ import { Label } from "../components/ui/label";
 import { Logo } from "../components/Logo";
 
 type AuthMode = "login" | "signup";
+type LoginVariant = "member" | "admin";
 
 type AuthFormValues = {
   fullName: string;
@@ -62,6 +64,7 @@ const LoginLogo = ({ variant = "light" }: { variant?: "light" | "dark" }) => {
 
 export function Auth() {
   const [mode, setMode] = useState<AuthMode>("login");
+  const [loginVariant, setLoginVariant] = useState<LoginVariant>("member");
   const [showPassword, setShowPassword] = useState(false);
   const [feedback, setFeedback] = useState<{
     kind: "error" | "success";
@@ -132,6 +135,7 @@ export function Auth() {
 
   const toggleMode = () => {
     setMode((current) => (current === "login" ? "signup" : "login"));
+    setLoginVariant("member");
     setFeedback(null);
     setShowPassword(false);
     reset(defaultValues);
@@ -142,6 +146,25 @@ export function Auth() {
 
     try {
       if (mode === "login") {
+        const isAdminLogin = loginVariant === "admin";
+
+        if (isAdminLogin && !adminEmail) {
+          setFeedback({
+            kind: "error",
+            message:
+              "Admin login is not configured yet. Add VITE_ADMIN_EMAIL to enable it.",
+          });
+          return;
+        }
+
+        if (isAdminLogin && values.email.toLowerCase() !== adminEmail) {
+          setFeedback({
+            kind: "error",
+            message: "Use the configured admin email to access the admin portal.",
+          });
+          return;
+        }
+
         const authData = await signIn({
           email: values.email,
           password: values.password,
@@ -154,9 +177,6 @@ export function Auth() {
           });
           return;
         }
-
-        const isAdminLogin =
-          Boolean(adminEmail) && values.email.toLowerCase() === adminEmail;
 
         navigate(isAdminLogin ? "/admin" : redirectTo, { replace: true });
         return;
@@ -304,6 +324,42 @@ export function Auth() {
                 : "Create an account to start using authentication and project CRUD."}
             </p>
           </div>
+
+          {mode === "login" ? (
+            <div className="mb-6 rounded-2xl bg-gray-50 p-2">
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setLoginVariant("member")}
+                  className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-colors ${
+                    loginVariant === "member"
+                      ? "bg-[#145A41] text-white shadow-sm"
+                      : "text-gray-600 hover:bg-white"
+                  }`}
+                >
+                  <Users className="h-4 w-4" />
+                  Member Login
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLoginVariant("admin")}
+                  className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-colors ${
+                    loginVariant === "admin"
+                      ? "bg-gray-900 text-white shadow-sm"
+                      : "text-gray-600 hover:bg-white"
+                  }`}
+                >
+                  <Shield className="h-4 w-4" />
+                  Admin Login
+                </button>
+              </div>
+              <p className="mt-3 px-2 text-xs font-medium text-gray-500">
+                {loginVariant === "admin"
+                  ? "Use the configured admin email to enter the admin portal."
+                  : "Sign in with your member account to access the dashboard."}
+              </p>
+            </div>
+          ) : null}
 
           {feedback ? (
             <Alert

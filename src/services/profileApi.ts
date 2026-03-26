@@ -7,6 +7,8 @@ export type Profile = {
   email: string;
   full_name: string | null;
   role: AppRole;
+  subscription_plan: "none" | "basic" | "premium";
+  account_status: "active" | "inactive";
   created_at: string;
   updated_at: string;
 };
@@ -27,7 +29,7 @@ export async function fetchProfile(userId: string): Promise<Profile | null> {
 
 export async function updateProfile(
   userId: string,
-  payload: Pick<Profile, "full_name">,
+  payload: Partial<Pick<Profile, "full_name" | "subscription_plan" | "account_status">>,
 ): Promise<Profile> {
   const { data, error } = await supabase
     .from("profiles")

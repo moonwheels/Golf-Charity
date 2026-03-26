@@ -1,8 +1,80 @@
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { toast } from "sonner";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 import { Card } from "../../components/ui/card";
 import { Users, Activity, DollarSign, Heart } from "lucide-react";
+import {
+  fetchAdminAnalytics,
+  type AdminAnalytics,
+} from "../../../services/adminApi";
+import { supabase } from "../../../services/supabaseClient";
+
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
 
 export function Analytics() {
+  const [analytics, setAnalytics] = useState<AdminAnalytics>({
+    totalUsers: 0,
+    activeSubscriptions: 0,
+    prizePool: 0,
+    charityContributions: 0,
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadAnalytics = async () => {
+      try {
+        const nextAnalytics = await fetchAdminAnalytics();
+        setAnalytics(nextAnalytics);
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Failed to load analytics.";
+        toast.error(message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    void loadAnalytics();
+
+    const channels: RealtimeChannel[] = [
+      supabase
+        .channel("admin-analytics-profiles")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "profiles" },
+          () => void loadAnalytics(),
+        )
+        .subscribe(),
+      supabase
+        .channel("admin-analytics-charities")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "charities" },
+          () => void loadAnalytics(),
+        )
+        .subscribe(),
+      supabase
+        .channel("admin-analytics-draw-configurations")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "draw_configurations" },
+          () => void loadAnalytics(),
+        )
+        .subscribe(),
+    ];
+
+    return () => {
+      channels.forEach((channel) => {
+        void supabase.removeChannel(channel);
+      });
+    };
+  }, []);
+
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 max-w-7xl mx-auto">
       <div>
@@ -12,10 +84,38 @@ export function Analytics() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: "Total Users", value: "4,250", change: "+12%", icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
-          { label: "Active Subscriptions", value: "3,890", change: "+8%", icon: Activity, color: "text-green-600", bg: "bg-green-50" },
-          { label: "Total Prize Pool", value: "$45,000", change: "Next Draw", icon: DollarSign, color: "text-[#D4AF37]", bg: "bg-[#FFD95A]/20" },
-          { label: "Charity Contributions", value: "$128,500", change: "YTD", icon: Heart, color: "text-red-500", bg: "bg-red-50" },
+          {
+            label: "Total Users",
+            value: analytics.totalUsers.toLocaleString(),
+            change: isLoading ? "Loading" : "Live",
+            icon: Users,
+            color: "text-blue-600",
+            bg: "bg-blue-50",
+          },
+          {
+            label: "Active Subscriptions",
+            value: analytics.activeSubscriptions.toLocaleString(),
+            change: isLoading ? "Loading" : "Live",
+            icon: Activity,
+            color: "text-green-600",
+            bg: "bg-green-50",
+          },
+          {
+            label: "Total Prize Pool",
+            value: currencyFormatter.format(analytics.prizePool),
+            change: "Current Draw",
+            icon: DollarSign,
+            color: "text-[#D4AF37]",
+            bg: "bg-[#FFD95A]/20",
+          },
+          {
+            label: "Charity Contributions",
+            value: currencyFormatter.format(analytics.charityContributions),
+            change: "All Time",
+            icon: Heart,
+            color: "text-red-500",
+            bg: "bg-red-50",
+          },
         ].map((stat, i) => (
           <Card key={i} className="p-6 border-0 shadow-sm rounded-3xl bg-white">
             <div className="flex justify-between items-start mb-4">
