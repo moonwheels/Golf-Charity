@@ -213,10 +213,10 @@ export function Auth() {
               <Check className="w-3.5 h-3.5" /> PLAY. WIN. GIVE BACK.
             </div>
             <h1 className="text-[3rem] leading-[1.05] font-bold text-white tracking-tight">
-              Connect GolfGive to a real backend
+              Every round can create real impact
             </h1>
             <p className="mt-5 max-w-lg text-base text-white/75 font-medium leading-relaxed">
-              Secure authentication, role-aware access, and real-time Supabase data in a cleaner TypeScript flow.
+              Join GolfGive to track your progress, unlock member rewards, and support charitable causes through the game you already love.
             </p>
 
             <div className="mt-10 grid gap-4">
@@ -225,9 +225,9 @@ export function Auth() {
                   <TrendingUp className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-white">Realtime subscriptions</p>
+                  <p className="text-sm font-bold text-white">Track your golf journey</p>
                   <p className="mt-1 text-sm font-medium text-white/60">
-                    Profile and data updates can stream into the UI without a manual refresh.
+                    Keep up with scores, draws, and membership activity from one place.
                   </p>
                 </div>
               </div>
@@ -237,9 +237,9 @@ export function Auth() {
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-white">RLS and role-based access</p>
+                  <p className="text-sm font-bold text-white">Play with purpose</p>
                   <p className="mt-1 text-sm font-medium text-white/60">
-                    Authenticated users only see their own records unless their role grants admin access.
+                    Support meaningful initiatives while enjoying rewards, community, and competition.
                   </p>
                 </div>
               </div>
