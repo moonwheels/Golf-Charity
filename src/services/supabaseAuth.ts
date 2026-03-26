@@ -36,6 +36,7 @@ export async function signUpWithEmail({
     email,
     password,
     options: {
+      emailRedirectTo: "https://golf-charity-kohl.vercel.app",
       data: {
         full_name: fullName,
       },
