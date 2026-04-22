@@ -79,3 +79,49 @@ export async function signOutUser(): Promise<void> {
     throw error;
   }
 }
+
+export type UpdateUserPayload = {
+  email?: string;
+  password?: string;
+  fullName?: string;
+};
+
+export async function updateCurrentUser({
+  email,
+  password,
+  fullName,
+}: UpdateUserPayload): Promise<User> {
+  const attributes: {
+    email?: string;
+    password?: string;
+    data?: {
+      full_name?: string;
+    };
+  } = {};
+
+  if (email) {
+    attributes.email = email;
+  }
+
+  if (password) {
+    attributes.password = password;
+  }
+
+  if (fullName !== undefined) {
+    attributes.data = {
+      full_name: fullName,
+    };
+  }
+
+  const { data, error } = await supabase.auth.updateUser(attributes);
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data.user) {
+    throw new Error("Unable to update the authenticated user.");
+  }
+
+  return data.user;
+}

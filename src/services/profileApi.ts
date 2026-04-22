@@ -29,7 +29,7 @@ export async function fetchProfile(userId: string): Promise<Profile | null> {
 
 export async function updateProfile(
   userId: string,
-  payload: Partial<Pick<Profile, "full_name" | "subscription_plan" | "account_status">>,
+  payload: Partial<Pick<Profile, "email" | "full_name" | "subscription_plan" | "account_status">>,
 ): Promise<Profile> {
   const { data, error } = await supabase
     .from("profiles")
