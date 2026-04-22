@@ -1,4 +1,5 @@
 import type { Session, User } from "@supabase/supabase-js";
+import { appEnv } from "../config/env";
 import { supabase } from "./supabaseClient";
 
 export type SignUpPayload = {
@@ -32,11 +33,13 @@ export async function signUpWithEmail({
   password,
   fullName,
 }: SignUpPayload): Promise<AuthSessionData> {
+  const emailRedirectTo = appEnv.authRedirectUrl;
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: "https://golf-charity-kohl.vercel.app",
+      ...(emailRedirectTo ? { emailRedirectTo } : {}),
       data: {
         full_name: fullName,
       },

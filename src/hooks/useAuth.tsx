@@ -2,12 +2,15 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
 import type { RealtimeChannel, Session, User } from "@supabase/supabase-js";
 import {
   fetchProfile,
+  getDefaultAuthenticatedPath,
+  hasActiveSubscription,
   type AppRole,
   type Profile,
 } from "../services/profileApi";
@@ -25,10 +28,13 @@ type AuthContextValue = {
   session: Session | null;
   user: User | null;
   profile: Profile | null;
-  role: AppRole;
+  role: AppRole | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  hasActiveSubscription: boolean;
+  profileError: string | null;
+  defaultAuthenticatedPath: string;
   refreshProfile: () => Promise<void>;
   signUp: (payload: SignUpPayload) => ReturnType<typeof signUpWithEmail>;
   signIn: (payload: SignInPayload) => ReturnType<typeof signInWithEmail>;
@@ -37,55 +43,132 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+function getErrorMessage(error: unknown, fallbackMessage: string) {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return fallbackMessage;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const isMountedRef = useRef(true);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [profileError, setProfileError] = useState<string | null>(null);
 
-  const loadProfile = async (nextUser: User | null) => {
+  const loadProfile = async (
+    nextUser: User | null,
+    options?: { preserveExistingProfileOnError?: boolean },
+  ) => {
     if (!nextUser) {
-      setProfile(null);
-      return;
+      if (isMountedRef.current) {
+        setProfile(null);
+        setProfileError(null);
+      }
+      return null;
     }
 
     try {
       const nextProfile = await fetchProfile(nextUser.id);
-      setProfile(nextProfile);
-    } catch {
-      setProfile(null);
+
+      if (!nextProfile) {
+        throw new Error(
+          "Your account profile could not be loaded. Please sign out and sign back in.",
+        );
+      }
+
+      if (isMountedRef.current) {
+        setProfile(nextProfile);
+        setProfileError(null);
+      }
+
+      return nextProfile;
+    } catch (error) {
+      if (!isMountedRef.current) {
+        return null;
+      }
+
+      if (!options?.preserveExistingProfileOnError) {
+        setProfile(null);
+      }
+
+      setProfileError(
+        getErrorMessage(error, "Unable to load your account profile."),
+      );
+      return null;
     }
   };
 
   useEffect(() => {
-    let isMounted = true;
+    isMountedRef.current = true;
 
-    const loadSession = async () => {
-      try {
-        const activeSession = await getSession();
+    const syncSession = async (
+      nextSession: Session | null,
+      options?: { preserveExistingProfileOnError?: boolean },
+    ) => {
+      const shouldShowGlobalLoading = !options?.preserveExistingProfileOnError;
 
-        if (isMounted) {
-          setSession(activeSession);
-          await loadProfile(activeSession?.user ?? null);
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
+      if (!isMountedRef.current) {
+        return;
+      }
+
+      setSession(nextSession);
+
+      if (!nextSession?.user) {
+        setProfile(null);
+        setProfileError(null);
+        setIsLoading(false);
+        return;
+      }
+
+      if (shouldShowGlobalLoading) {
+        setIsLoading(true);
+      }
+
+      await loadProfile(nextSession.user, options);
+
+      if (isMountedRef.current && shouldShowGlobalLoading) {
+        setIsLoading(false);
       }
     };
 
-    void loadSession();
+    const bootstrapSession = async () => {
+      setIsLoading(true);
+
+      try {
+        const activeSession = await getSession();
+        await syncSession(activeSession);
+      } catch (error) {
+        if (!isMountedRef.current) {
+          return;
+        }
+
+        setSession(null);
+        setProfile(null);
+        setProfileError(
+          getErrorMessage(error, "Unable to restore your session."),
+        );
+        setIsLoading(false);
+      }
+    };
+
+    void bootstrapSession();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession);
-      void loadProfile(nextSession?.user ?? null);
-      setIsLoading(false);
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
+      const preserveExistingProfileOnError =
+        event === "TOKEN_REFRESHED" || event === "USER_UPDATED";
+
+      void syncSession(nextSession, {
+        preserveExistingProfileOnError,
+      });
     });
 
     return () => {
-      isMounted = false;
+      isMountedRef.current = false;
       subscription.unsubscribe();
     };
   }, []);
@@ -108,7 +191,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           filter: `id=eq.${user.id}`,
         },
         () => {
-          void loadProfile(user);
+          void loadProfile(user, {
+            preserveExistingProfileOnError: true,
+          });
         },
       )
       .subscribe();
@@ -118,8 +203,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [user?.id]);
 
-  const role: AppRole = profile?.role === "admin" ? "admin" : "member";
+  const role: AppRole | null = profile?.role ?? null;
   const isAdmin = role === "admin";
+  const defaultAuthenticatedPath = getDefaultAuthenticatedPath(profile);
+
   const value: AuthContextValue = {
     session,
     user,
@@ -128,8 +215,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isLoading,
     isAuthenticated: Boolean(session?.user),
     isAdmin,
+    hasActiveSubscription: hasActiveSubscription(profile),
+    profileError,
+    defaultAuthenticatedPath,
     refreshProfile: async () => {
-      await loadProfile(session?.user ?? null);
+      await loadProfile(session?.user ?? null, {
+        preserveExistingProfileOnError: true,
+      });
     },
     signUp: signUpWithEmail,
     signIn: signInWithEmail,

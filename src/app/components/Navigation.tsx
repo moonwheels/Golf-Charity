@@ -7,7 +7,7 @@ import { Logo } from "./Logo";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const { isAuthenticated, isAdmin, signOut } = useAuth();
+  const { isAuthenticated, isAdmin, defaultAuthenticatedPath, signOut } = useAuth();
 
   const handleLogout = async () => {
     await signOut();
@@ -52,7 +52,7 @@ export function Navigation() {
             </Link>
             {isAuthenticated ? (
               <>
-                <Link to="/dashboard" className="text-white hover:text-[#FFD95A] transition-colors text-sm lg:text-base">
+                <Link to={defaultAuthenticatedPath} className="text-white hover:text-[#FFD95A] transition-colors text-sm lg:text-base">
                   Dashboard
                 </Link>
                 {isAdmin ? (
@@ -109,7 +109,7 @@ export function Navigation() {
             {isAuthenticated ? (
               <>
                 <Link
-                  to="/dashboard"
+                  to={defaultAuthenticatedPath}
                   className="block text-white hover:text-[#FFD95A] transition-colors py-2"
                   onClick={() => setIsOpen(false)}
                 >

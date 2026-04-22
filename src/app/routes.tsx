@@ -44,6 +44,30 @@ function ProtectedAdmin() {
   );
 }
 
+function ProtectedSubscribedScores() {
+  return (
+    <ProtectedRoute requireActiveSubscription>
+      <DashboardScores />
+    </ProtectedRoute>
+  );
+}
+
+function ProtectedSubscribedDraws() {
+  return (
+    <ProtectedRoute requireActiveSubscription>
+      <Draws />
+    </ProtectedRoute>
+  );
+}
+
+function ProtectedSubscribedCharity() {
+  return (
+    <ProtectedRoute requireActiveSubscription>
+      <Charity />
+    </ProtectedRoute>
+  );
+}
+
 function PublicAuthPage() {
   return (
     <PublicOnlyRoute>
@@ -71,9 +95,9 @@ export const router = createBrowserRouter([
     Component: ProtectedDashboard,
     children: [
       { index: true, Component: Overview },
-      { path: "scores", Component: DashboardScores },
-      { path: "draws", Component: Draws },
-      { path: "charity", Component: Charity },
+      { path: "scores", Component: ProtectedSubscribedScores },
+      { path: "draws", Component: ProtectedSubscribedDraws },
+      { path: "charity", Component: ProtectedSubscribedCharity },
       { path: "subscription", Component: Subscription },
       { path: "profile", Component: DashboardProfile },
     ],

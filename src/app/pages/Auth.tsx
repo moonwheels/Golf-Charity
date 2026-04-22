@@ -14,7 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import { fetchProfile } from "../../services/profileApi";
+import { fetchProfile, hasActiveSubscription } from "../../services/profileApi";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { Checkbox } from "../components/ui/checkbox";
@@ -157,9 +157,22 @@ export function Auth() {
           ? await fetchProfile(authData.user.id)
           : null;
 
-        navigate(profile?.role === "admin" ? "/admin" : redirectTo, {
+        if (!profile) {
+          throw new Error(
+            "Your account was authenticated, but your profile could not be loaded. Please try again.",
+          );
+        }
+
+        navigate(
+          profile.role === "admin"
+            ? "/admin"
+            : hasActiveSubscription(profile)
+              ? redirectTo
+              : "/dashboard/subscription",
+          {
           replace: true,
-        });
+          },
+        );
         return;
       }
 
@@ -170,7 +183,7 @@ export function Auth() {
       });
 
       if (authData.session && authData.user) {
-        navigate("/dashboard", { replace: true });
+        navigate("/dashboard/subscription", { replace: true });
         return;
       }
 
