@@ -11,7 +11,7 @@ export function PublicLayout() {
   return (
     <div className="min-h-screen">
       <AuthModal />
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0B3D2E]/85 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-b border-white/20 transition-all duration-300">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0B3D2E] shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-b border-white/20 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 lg:py-5">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group">
