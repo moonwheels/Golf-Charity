@@ -5,7 +5,6 @@ import { PublicLayout } from "./components/PublicLayout";
 import { DashboardLayout } from "./components/DashboardLayout";
 import { AdminLayout } from "./components/AdminLayout";
 import { Home } from "./pages/Home";
-import { Auth } from "./pages/Auth";
 import { NotFound } from "./pages/NotFound";
 
 // Public pages
@@ -69,14 +68,6 @@ function ProtectedSubscribedCharity() {
   );
 }
 
-function PublicAuthPage() {
-  return (
-    <PublicOnlyRoute>
-      <Auth />
-    </PublicOnlyRoute>
-  );
-}
-
 export const router = createBrowserRouter([
   {
     Component: PublicLayout,
@@ -86,10 +77,6 @@ export const router = createBrowserRouter([
       { path: "/impact", Component: Impact },
       { path: "/rewards", Component: Rewards },
     ],
-  },
-  {
-    path: "/auth",
-    Component: PublicAuthPage,
   },
   {
     path: "/dashboard",

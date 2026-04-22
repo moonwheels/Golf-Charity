@@ -152,7 +152,7 @@ export function Pricing() {
                     </ul>
                   </div>
 
-                  <Link to="/auth">
+                  <Link to="/?auth=login">
                     <Button
                       className={`w-full ${
                         plan.popular

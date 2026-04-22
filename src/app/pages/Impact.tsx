@@ -102,7 +102,7 @@ export function Impact() {
               <div className="text-lg font-bold text-gray-900 mb-4 truncate max-w-[250px]">
                 {CHARITIES.find(c => c.id === selectedCharity)?.name || "Select a charity"}
               </div>
-              <Link to="/auth">
+              <Link to="/?auth=login">
                 <Button className="w-full md:w-auto bg-[#FFD95A] hover:bg-[#F4C430] text-[#145A41] font-extrabold px-8 py-6 rounded-xl shadow-lg hover:-translate-y-0.5 transition-all text-lg">
                   Get Started <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>

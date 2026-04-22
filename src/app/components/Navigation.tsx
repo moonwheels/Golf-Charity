@@ -73,10 +73,10 @@ export function Navigation() {
               </>
             ) : (
               <div className="flex items-center gap-3 border-l border-white/20 pl-6 ml-2">
-                <Link to="/auth" className="text-white hover:text-[#FFD95A] transition-colors text-sm lg:text-base font-bold">
+                <Link to="/?auth=login" className="text-white hover:text-[#FFD95A] transition-colors text-sm lg:text-base font-bold">
                   Log In
                 </Link>
-                <Link to="/auth">
+                <Link to="/?auth=login">
                   <Button
                     size="sm"
                     className="bg-[#FFD95A] text-[#0B3D2E] hover:bg-[#F4C430] font-bold shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-200"
@@ -137,12 +137,12 @@ export function Navigation() {
               </>
             ) : (
               <div className="pt-2 flex flex-col gap-2">
-                <Link to="/auth" onClick={() => setIsOpen(false)}>
+                <Link to="/?auth=login" onClick={() => setIsOpen(false)}>
                   <Button variant="outline" size="sm" className="w-full font-bold border-white/20 text-white hover:bg-white/10">
                     Log In
                   </Button>
                 </Link>
-                <Link to="/auth" onClick={() => setIsOpen(false)}>
+                <Link to="/?auth=login" onClick={() => setIsOpen(false)}>
                   <Button size="sm" className="bg-[#FFD95A] text-[#145A41] hover:bg-[#F4C430] font-bold w-full shadow-lg">
                     Get Started
                   </Button>

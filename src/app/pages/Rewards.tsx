@@ -305,7 +305,7 @@ export function Rewards() {
                       </div>
                     </div>
 
-                    <Link to="/auth">
+                    <Link to="/?auth=login">
                       <Button className="w-full bg-[#FFD95A] hover:bg-[#F4C430] text-[#145A41] font-bold mt-4 shadow-lg hover:-translate-y-0.5 transition-transform h-12">
                         Get Started <ChevronRight className="ml-1 w-4 h-4" />
                       </Button>
