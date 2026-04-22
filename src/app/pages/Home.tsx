@@ -310,22 +310,19 @@ export function Home() {
             {[
               {
                 name: "Children's Education Fund",
-                image:
-                  "https://images.unsplash.com/photo-1771408427146-09be9a1d4535?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMGNsYXNzcm9vbSUyMGxlYXJuaW5nJTIwZWR1Y2F0aW9ufGVufDF8fHx8MTc3NDUyMDI0NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+                image: "/charity-education.jpg",
                 raised: "$450,000",
                 impact: "15,000 children educated",
               },
               {
                 name: "Healthcare for All",
-                image:
-                  "https://images.unsplash.com/photo-1722974180453-305758503804?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGhjYXJlJTIwbWVkaWNhbCUyMHZvbHVudGVlcnMlMjBoZWxwaW5nfGVufDF8fHx8MTc3NDUyMDI0NXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+                image: "/charity-healthcare.jpg",
                 raised: "$820,000",
                 impact: "25,000 lives improved",
               },
               {
                 name: "Community Food Program",
-                image:
-                  "https://images.unsplash.com/photo-1710092784814-4a6f158913b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21tdW5pdHklMjBmb29kJTIwZG9uYXRpb24lMjB2b2x1bnRlZXJzfGVufDF8fHx8MTc3NDUxMjA2MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+                image: "/charity-community-food.jpg",
                 raised: "$380,000",
                 impact: "50,000 meals served",
               },
