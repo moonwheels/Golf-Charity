@@ -3,10 +3,21 @@ import { Link } from "react-router";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
 import { Trophy, Calendar, Gift, ChevronRight, AlertCircle, Clock, Star, Sparkles, CheckCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../../hooks/useAuth";
+import { fetchMemberDrawData, type MemberDrawData } from "../../../services/memberDataApi";
 
 export function Draws() {
-  const drawNumbers = [34, 38, 41, 29, 36];
-  const userNumbers = [34, 42, 41, 25, 36];
+  const { user } = useAuth();
+  const [data, setData] = useState<MemberDrawData | null>(null);
+
+  useEffect(() => {
+    if (user?.id) fetchMemberDrawData(user.id).then(setData);
+  }, [user?.id]);
+
+  const drawNumbers = data?.drawResult?.winning_scores || [];
+  const userNumbers = data?.entryScores || [];
+  
   const matchCount = userNumbers.filter(num => drawNumbers.includes(num)).length;
 
   return (

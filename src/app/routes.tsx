@@ -27,6 +27,7 @@ import { AdminUsers } from "./pages/admin/AdminUsers";
 import { DrawManagement } from "./pages/admin/DrawManagement";
 import { AdminCharities } from "./pages/admin/AdminCharities";
 import { Winners } from "./pages/admin/Winners";
+import { AdminScores } from "./pages/admin/AdminScores";
 
 function ProtectedDashboard() {
   return (
@@ -108,6 +109,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, Component: Analytics },
       { path: "users", Component: AdminUsers },
+      { path: "scores", Component: AdminScores },
       { path: "draws", Component: DrawManagement },
       { path: "charities", Component: AdminCharities },
       { path: "winners", Component: Winners },

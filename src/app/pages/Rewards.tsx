@@ -3,10 +3,20 @@ import { Link } from "react-router";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { Trophy, Calendar, Gift, ChevronRight, AlertCircle, Clock, Star, Sparkles, CheckCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { fetchMemberDrawData, type MemberDrawData } from "../../services/memberDataApi";
 
 export function Rewards() {
-  const drawNumbers = [34, 38, 41, 29, 36];
-  const userNumbers = [34, 42, 41, 25, 36];
+  const { user } = useAuth();
+  const [data, setData] = useState<MemberDrawData | null>(null);
+
+  useEffect(() => {
+    if (user?.id) fetchMemberDrawData(user.id).then(setData);
+  }, [user?.id]);
+
+  const drawNumbers = data?.drawResult?.winning_scores || [];
+  const userNumbers = data?.entryScores || [];
   
   const matchCount = userNumbers.filter(num => drawNumbers.includes(num)).length;
 
@@ -185,9 +195,51 @@ export function Rewards() {
                     </div>
                     
                     {matchCount >= 3 ? (
-                      <div className="mt-6 p-4 bg-[#FFD95A]/20 border border-[#FFD95A] rounded-xl text-[#145A41] font-bold flex items-center gap-3">
-                        <Gift className="w-6 h-6 text-[#F4C430]" />
-                        Congratulations! You've won a Tier {5 - matchCount + 1} prize. We'll email you shortly.
+                      <div className="mt-6 p-4 bg-[#FFD95A]/20 border border-[#FFD95A] rounded-xl text-[#145A41] font-bold flex flex-col gap-3">
+                        <div className="flex items-center gap-3">
+                          <Gift className="w-6 h-6 text-[#F4C430]" />
+                          Congratulations! You've won a {data?.winningTier || `Tier ${5 - matchCount + 1}`} prize.
+                        </div>
+
+                        {data?.winningStatus === "pending" && !data?.proofSubmitted ? (
+                          <div className="mt-2 text-sm font-medium">
+                            <p className="mb-2">Please submit a scorecard image or link to verify your score:</p>
+                            <form
+                              onSubmit={async (e) => {
+                                e.preventDefault();
+                                const form = e.target as HTMLFormElement;
+                                const proofText = (form.elements.namedItem("proof") as HTMLInputElement).value;
+                                if (data?.winningId && user?.id) {
+                                  try {
+                                    const { submitWinnerProof } = await import("../../services/memberDataApi");
+                                    await submitWinnerProof(data.winningId, user.id, proofText);
+                                    setData({ ...data, proofSubmitted: true });
+                                  } catch (error) {
+                                    alert("Failed to submit: " + (error as Error).message);
+                                  }
+                                }
+                              }}
+                              className="flex gap-2"
+                            >
+                              <input
+                                name="proof"
+                                type="text"
+                                className="flex-1 px-3 py-2 border rounded-lg"
+                                placeholder="Paste link or text proof here"
+                                required
+                              />
+                              <Button type="submit" className="bg-[#145A41] text-white">Submit Proof</Button>
+                            </form>
+                          </div>
+                        ) : data?.proofSubmitted ? (
+                          <div className="mt-2 text-sm text-[#145A41] bg-white/50 p-2 rounded px-3 border border-[#145A41]/20">
+                            Proof submitted and is pending verification.
+                          </div>
+                        ) : data?.winningStatus === "approved" || data?.winningStatus === "paid" ? (
+                          <div className="mt-2 text-sm text-[#145A41] bg-white/50 p-2 rounded px-3 border border-[#145A41]/20">
+                            Your prize matches have been verified!
+                          </div>
+                        ) : null}
                       </div>
                     ) : (
                       <div className="mt-6 text-gray-500 font-medium text-sm">

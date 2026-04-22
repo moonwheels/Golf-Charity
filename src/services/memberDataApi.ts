@@ -293,7 +293,7 @@ export async function upsertMemberCharityPreference(
   }
 
   const normalizedPreference = normalizeCharityPreference(
-    data as MemberCharityPreferenceRow,
+    data as unknown as MemberCharityPreferenceRow,
   );
 
   if (!normalizedPreference) {
@@ -325,3 +325,85 @@ export function subscribeToMemberCharityPreference(
     void supabase.removeChannel(channel);
   };
 }
+
+export type DrawResultRecord = {
+  id: string;
+  draw_period_id: string;
+  winning_scores: number[];
+  published_at: string | null;
+};
+
+export type MemberDrawData = {
+  drawResult: DrawResultRecord | null;
+  entryScores: number[];
+  winningTier: string | null;
+  prizeName: string | null;
+  winningStatus: string | null;
+  winningId: string | null;
+  proofSubmitted: boolean;
+};
+
+export async function fetchMemberDrawData(userId: string): Promise<MemberDrawData> {
+  const { data: drawRes } = await supabase
+    .from("draw_results")
+    .select("*")
+    .not("published_at", "is", null)
+    .order("published_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (!drawRes) {
+    return { drawResult: null, entryScores: [], winningTier: null, prizeName: null, winningStatus: null, winningId: null, proofSubmitted: false };
+  }
+
+  const { data: entryData } = await supabase
+    .from("draw_entries")
+    .select("entry_scores")
+    .eq("draw_period_id", drawRes.draw_period_id)
+    .eq("profile_id", userId)
+    .maybeSingle();
+
+  const { data: winningData } = await supabase
+    .from("winnings")
+    .select("id, tier, prize_name, status")
+    .eq("draw_period_id", drawRes.draw_period_id)
+    .eq("profile_id", userId)
+    .maybeSingle();
+
+  let proofSubmitted = false;
+  if (winningData?.id) {
+    const { data: proofData } = await supabase
+      .from("winner_proof_submissions")
+      .select("id")
+      .eq("winning_id", winningData.id)
+      .maybeSingle();
+    proofSubmitted = !!proofData;
+  }
+
+  return {
+    drawResult: drawRes as DrawResultRecord,
+    entryScores: entryData?.entry_scores || [],
+    winningTier: winningData?.tier || null,
+    prizeName: winningData?.prize_name || null,
+    winningStatus: winningData?.status || null,
+    winningId: winningData?.id || null,
+    proofSubmitted,
+  };
+}
+
+export async function submitWinnerProof(winningId: string, profileId: string, proofText: string): Promise<void> {
+  if (!proofText.trim()) throw new Error("Proof text is required.");
+
+  const { error } = await supabase
+    .from("winner_proof_submissions")
+    .insert({
+      winning_id: winningId,
+      profile_id: profileId,
+      proof_text: proofText,
+    });
+
+  if (error) {
+    throw new Error(getErrorMessage(error, "Unable to submit proof."));
+  }
+}
+

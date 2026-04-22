@@ -108,20 +108,15 @@ export function DrawManagement() {
     setSimulating(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-      const summary =
-        config.algorithm === "weighted"
-          ? "Weighted simulation completed. 152 projected winners."
-          : "Standard simulation completed. 145 projected winners.";
-      await updateDrawSimulation({
+      const dbConfig = await updateDrawSimulation({
         draw_date: config.drawDate,
         prize_pool: prizePool,
         algorithm: config.algorithm,
-        last_simulation_summary: summary,
-        last_simulated_at: new Date().toISOString(),
+        last_simulation_summary: null,
+        last_simulated_at: null,
       });
-      setLastSimulation(summary);
-      toast.success(summary);
+      setLastSimulation(dbConfig.last_simulation_summary);
+      toast.success(dbConfig.last_simulation_summary || "Simulation Complete.");
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Failed to run simulation.";

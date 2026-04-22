@@ -10,6 +10,7 @@ import {
   Menu,
   X,
   Shield,
+  ClipboardList,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { Logo } from "./Logo";
@@ -17,6 +18,7 @@ import { Logo } from "./Logo";
 const ADMIN_ITEMS = [
   { path: "/admin", label: "Analytics", icon: BarChart3, exact: true },
   { path: "/admin/users", label: "Users", icon: Users },
+  { path: "/admin/scores", label: "Scores", icon: ClipboardList },
   { path: "/admin/draws", label: "Draw Management", icon: Settings },
   { path: "/admin/charities", label: "Charities", icon: Heart },
   { path: "/admin/winners", label: "Winners", icon: Trophy },

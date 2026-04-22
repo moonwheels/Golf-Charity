@@ -22,6 +22,7 @@ export function Analytics() {
     activeSubscriptions: 0,
     prizePool: 0,
     charityContributions: 0,
+    charityDistribution: [],
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -150,12 +151,7 @@ export function Analytics() {
         <Card className="p-6 border-0 shadow-sm rounded-3xl bg-white">
           <h3 className="text-xl font-bold text-gray-900 mb-6">Charity Distribution</h3>
           <div className="space-y-4">
-            {[
-              { name: "Global Education Initiative", value: 45, color: "bg-[#145A41]" },
-              { name: "Clean Water Access", value: 25, color: "bg-[#2563EB]" },
-              { name: "Community Food Network", value: 20, color: "bg-[#F59E0B]" },
-              { name: "Others", value: 10, color: "bg-gray-300" },
-            ].map((item, i) => (
+            {analytics.charityDistribution?.map((item, i) => (
               <div key={i}>
                 <div className="flex justify-between text-sm font-bold text-gray-700 mb-2">
                   <span>{item.name}</span>
