@@ -2,7 +2,16 @@ import { motion } from "motion/react";
 import { Link } from "react-router";
 import { Button } from "../components/ui/button";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Heart, TrendingUp, Users, Target, Trophy, Sparkles, ArrowRight, Play } from "lucide-react";
+import {
+  Heart,
+  TrendingUp,
+  Users,
+  Target,
+  Trophy,
+  Sparkles,
+  ArrowRight,
+  Play,
+} from "lucide-react";
 import { Logo } from "../components/Logo";
 
 export function Home() {
@@ -45,16 +54,17 @@ export function Home() {
                 Give Back.
               </span>
             </motion.h1>
-            
+
             <motion.p
               className="text-[0.98rem] sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-10 lg:mb-12 max-w-xl md:max-w-2xl leading-relaxed font-medium"
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-              Track your game, win rewards, and create real impact in communities around the world.
+              Track your game, win rewards, and create real impact in
+              communities around the world.
             </motion.p>
-            
+
             <motion.div
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6 w-full max-w-xl mb-10 sm:mb-12 sm:justify-start"
               initial={{ y: 30, opacity: 0 }}
@@ -62,17 +72,25 @@ export function Home() {
               transition={{ delay: 0.7, duration: 0.8 }}
             >
               <Link to="/?auth=login" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full min-h-[3.75rem] bg-[#FFDF3A] text-[#145A41] hover:bg-[#FFE866] font-bold text-base sm:text-lg lg:text-xl px-6 sm:px-8 lg:px-10 py-5 sm:py-6 transition-all transform hover:-translate-y-1 border border-[#FFE866]/70">
-                  Get Started <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+                <Button
+                  size="lg"
+                  className="w-full min-h-[3.75rem] bg-[#FFDF3A] text-[#145A41] hover:bg-[#FFE866] font-bold text-base sm:text-lg lg:text-xl px-6 sm:px-8 lg:px-10 py-5 sm:py-6 transition-all transform hover:-translate-y-1 border border-[#FFE866]/70"
+                >
+                  Get Started{" "}
+                  <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               </Link>
               <Link to="/impact" className="w-full sm:w-auto">
-                <Button size="lg" variant="ghost" className="w-full min-h-[3.75rem] text-white hover:bg-white/10 font-bold text-base sm:text-lg lg:text-xl px-6 sm:px-8 lg:px-10 py-5 sm:py-6 border-2 border-white/20 hover:border-white/40 transition-all backdrop-blur-sm">
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="w-full min-h-[3.75rem] text-white hover:bg-white/10 font-bold text-base sm:text-lg lg:text-xl px-6 sm:px-8 lg:px-10 py-5 sm:py-6 border-2 border-white/20 hover:border-white/40 transition-all backdrop-blur-sm"
+                >
                   Learn More
                 </Button>
               </Link>
             </motion.div>
-            
+
             <motion.div
               className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 text-white/90 text-xs sm:text-sm md:text-base bg-white/5 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-2xl sm:rounded-full border border-white/10 shadow-lg justify-start w-full max-w-max"
               initial={{ y: 30, opacity: 0 }}
@@ -95,8 +113,12 @@ export function Home() {
                 </div>
               </div>
               <div className="flex flex-col text-left">
-                <span className="font-bold leading-tight">Join the Movement</span>
-                <span className="text-white/70 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Golfers Giving Back</span>
+                <span className="font-bold leading-tight">
+                  Join the Movement
+                </span>
+                <span className="text-white/70 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+                  Golfers Giving Back
+                </span>
               </div>
             </motion.div>
           </div>
@@ -124,11 +146,19 @@ export function Home() {
             {[...Array(4)].map((_, i) => (
               <span key={`first-${i}`} className="flex items-center">
                 <span className="mx-4 sm:mx-5 md:mx-8">PLAY WITH PURPOSE</span>
-                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">✦</span>
+                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">
+                  ✦
+                </span>
                 <span className="mx-4 sm:mx-5 md:mx-8">WIN REAL REWARDS</span>
-                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">✦</span>
-                <span className="mx-4 sm:mx-5 md:mx-8">SUPPORT REAL CAUSES</span>
-                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">✦</span>
+                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">
+                  ✦
+                </span>
+                <span className="mx-4 sm:mx-5 md:mx-8">
+                  SUPPORT REAL CAUSES
+                </span>
+                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">
+                  ✦
+                </span>
               </span>
             ))}
           </div>
@@ -136,11 +166,19 @@ export function Home() {
             {[...Array(4)].map((_, i) => (
               <span key={`second-${i}`} className="flex items-center">
                 <span className="mx-4 sm:mx-5 md:mx-8">PLAY WITH PURPOSE</span>
-                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">✦</span>
+                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">
+                  ✦
+                </span>
                 <span className="mx-4 sm:mx-5 md:mx-8">WIN REAL REWARDS</span>
-                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">✦</span>
-                <span className="mx-4 sm:mx-5 md:mx-8">SUPPORT REAL CAUSES</span>
-                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">✦</span>
+                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">
+                  ✦
+                </span>
+                <span className="mx-4 sm:mx-5 md:mx-8">
+                  SUPPORT REAL CAUSES
+                </span>
+                <span className="text-[#FFD95A]/70 text-[10px] sm:text-xs md:text-sm">
+                  ✦
+                </span>
               </span>
             ))}
           </div>
@@ -170,19 +208,22 @@ export function Home() {
               {
                 icon: <Target className="w-8 h-8" />,
                 title: "Enter Scores",
-                description: "Log your golf rounds and track your improvement over time. Connect with friends and join challenges.",
+                description:
+                  "Log your golf rounds and track your improvement over time. Connect with friends and join challenges.",
                 color: "#FFD95A",
               },
               {
                 icon: <Trophy className="w-8 h-8" />,
                 title: "Win Rewards",
-                description: "Compete monthly for prizes, merchandise, and golf experiences. The better you play, the more you win.",
+                description:
+                  "Compete monthly for prizes, merchandise, and golf experiences. The better you play, the more you win.",
                 color: "#145A41",
               },
               {
                 icon: <Heart className="w-8 h-8" />,
                 title: "Support Charity",
-                description: "Every subscription contributes to your chosen charity. See your impact grow with each game you play.",
+                description:
+                  "Every subscription contributes to your chosen charity. See your impact grow with each game you play.",
                 color: "#FFD95A",
               },
             ].map((step, index) => (
@@ -203,8 +244,12 @@ export function Home() {
                     {step.icon}
                   </div>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-[#145A41]">{step.title}</h3>
-                <p className="text-base sm:text-lg text-gray-600">{step.description}</p>
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 text-[#145A41]">
+                  {step.title}
+                </h3>
+                <p className="text-base sm:text-lg text-gray-600">
+                  {step.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -212,7 +257,12 @@ export function Home() {
       </section>
 
       {/* Impact Stats Section */}
-      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:py-24 text-white" style={{ background: 'linear-gradient(135deg, #0B3D2E 0%, #145A41 100%)' }}>
+      <section
+        className="px-4 py-16 sm:px-6 sm:py-20 lg:py-24 text-white"
+        style={{
+          background: "linear-gradient(135deg, #0B3D2E 0%, #145A41 100%)",
+        }}
+      >
         <div className="max-w-7xl mx-auto">
           <motion.div
             className="text-center mb-16"
@@ -248,7 +298,9 @@ export function Home() {
                 <div className="text-3xl sm:text-5xl md:text-6xl font-bold text-[#FFD95A] mb-2">
                   {stat.value}
                 </div>
-                <div className="text-sm sm:text-lg text-white/80">{stat.label}</div>
+                <div className="text-sm sm:text-lg text-white/80">
+                  {stat.label}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -258,19 +310,22 @@ export function Home() {
             {[
               {
                 name: "Children's Education Fund",
-                image: "https://images.unsplash.com/photo-1771408427146-09be9a1d4535?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMGNsYXNzcm9vbSUyMGxlYXJuaW5nJTIwZWR1Y2F0aW9ufGVufDF8fHx8MTc3NDUyMDI0NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+                image:
+                  "https://images.unsplash.com/photo-1771408427146-09be9a1d4535?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMGNsYXNzcm9vbSUyMGxlYXJuaW5nJTIwZWR1Y2F0aW9ufGVufDF8fHx8MTc3NDUyMDI0NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
                 raised: "$450,000",
                 impact: "15,000 children educated",
               },
               {
                 name: "Healthcare for All",
-                image: "https://images.unsplash.com/photo-1722974180453-305758503804?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGhjYXJlJTIwbWVkaWNhbCUyMHZvbHVudGVlcnMlMjBoZWxwaW5nfGVufDF8fHx8MTc3NDUyMDI0NXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+                image:
+                  "https://images.unsplash.com/photo-1722974180453-305758503804?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGhjYXJlJTIwbWVkaWNhbCUyMHZvbHVudGVlcnMlMjBoZWxwaW5nfGVufDF8fHx8MTc3NDUyMDI0NXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
                 raised: "$820,000",
                 impact: "25,000 lives improved",
               },
               {
                 name: "Community Food Program",
-                image: "https://images.unsplash.com/photo-1710092784814-4a6f158913b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21tdW5pdHklMjBmb29kJTIwZG9uYXRpb24lMjB2b2x1bnRlZXJzfGVufDF8fHx8MTc3NDUxMjA2MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+                image:
+                  "https://images.unsplash.com/photo-1710092784814-4a6f158913b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb21tdW5pdHklMjBmb29kJTIwZG9uYXRpb24lMjB2b2x1bnRlZXJzfGVufDF8fHx8MTc3NDUxMjA2MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
                 raised: "$380,000",
                 impact: "50,000 meals served",
               },
@@ -292,10 +347,14 @@ export function Home() {
                   />
                 </div>
                 <div className="p-5 sm:p-6">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-2">{charity.name}</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold mb-2">
+                    {charity.name}
+                  </h3>
                   <div className="flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between text-[#FFD95A] font-semibold">
                     <span>{charity.raised}</span>
-                    <span className="text-sm text-white/70">{charity.impact}</span>
+                    <span className="text-sm text-white/70">
+                      {charity.impact}
+                    </span>
                   </div>
                 </div>
               </motion.div>
@@ -305,7 +364,12 @@ export function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:py-24" style={{ background: 'linear-gradient(135deg, #FFD95A 0%, #F4C430 100%)' }}>
+      <section
+        className="px-4 py-16 sm:px-6 sm:py-20 lg:py-24"
+        style={{
+          background: "linear-gradient(135deg, #FFD95A 0%, #F4C430 100%)",
+        }}
+      >
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -317,10 +381,17 @@ export function Home() {
               Ready to Make an Impact?
             </h2>
             <p className="text-base sm:text-xl text-[#145A41]/80 mb-8">
-              Join thousands of golfers who are changing lives while improving their game.
+              Join thousands of golfers who are changing lives while improving
+              their game.
             </p>
-            <Link to="/pricing" className="inline-flex w-full justify-center sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto bg-[#145A41] hover:bg-[#0B3D2E] text-white font-bold text-base sm:text-lg px-8 sm:px-12 py-5 sm:py-6 shadow-xl hover:shadow-2xl transition-all">
+            <Link
+              to="/pricing"
+              className="inline-flex w-full justify-center sm:w-auto"
+            >
+              <Button
+                size="lg"
+                className="w-full sm:w-auto bg-[#145A41] hover:bg-[#0B3D2E] text-white font-bold text-base sm:text-lg px-8 sm:px-12 py-5 sm:py-6 shadow-xl hover:shadow-2xl transition-all"
+              >
                 Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
@@ -329,7 +400,12 @@ export function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="text-white px-4 py-10 sm:px-6 sm:py-12" style={{ background: 'linear-gradient(135deg, #0B3D2E 0%, #145A41 100%)' }}>
+      <footer
+        className="text-white px-4 py-10 sm:px-6 sm:py-12"
+        style={{
+          background: "linear-gradient(135deg, #0B3D2E 0%, #145A41 100%)",
+        }}
+      >
         <div className="max-w-7xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Logo className="w-12 h-12 text-[#FFD95A]" />
@@ -339,9 +415,15 @@ export function Home() {
             Making the world better, one round at a time.
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-8 text-sm text-white/60">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">Contact</a>
+            <a href="#" className="hover:text-white transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Contact
+            </a>
           </div>
         </div>
       </footer>

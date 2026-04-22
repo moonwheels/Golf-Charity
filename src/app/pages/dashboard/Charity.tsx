@@ -133,13 +133,14 @@ export function Charity() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.6 }}
       >
-        <Card className="p-8 bg-white rounded-3xl shadow-sm border-0 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex-1 w-full">
+        <Card className="rounded-3xl border-0 bg-white p-5 shadow-sm sm:p-6 lg:p-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-[#145A41]" /> Your Contribution Rate
               </h3>
-              <span className="text-3xl font-black text-[#145A41]">
+              <span className="text-2xl sm:text-3xl font-black text-[#145A41]">
                 {contributionPercent[0]}%
               </span>
             </div>
@@ -154,31 +155,38 @@ export function Charity() {
               step={1}
               className="py-4"
             />
-          </div>
-
-          <div className="hidden md:block w-px h-24 bg-gray-100"></div>
-
-          <div className="flex-shrink-0 w-full md:w-auto text-center md:text-right">
-            <div className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">
-              Currently Supporting
             </div>
-            <div className="text-lg font-bold text-gray-900 mb-4 truncate max-w-[250px]">
-              {selectedCharityRecord?.name || "Select a charity"}
+
+            <div className="hidden lg:block w-px h-24 bg-gray-100"></div>
+
+            <div className="w-full rounded-2xl bg-[#F7F8F7] px-4 py-4 text-left sm:px-5 lg:max-w-sm lg:min-w-[280px]">
+              <div className="text-xs font-bold text-gray-400 uppercase tracking-[0.18em] mb-2">
+                Currently Supporting
+              </div>
+              <div className="text-base sm:text-lg font-bold text-gray-900 leading-snug break-words">
+                {selectedCharityRecord?.name || "Select a charity"}
+              </div>
+              {selectedCharityRecord ? (
+                <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#145A41]/10 px-3 py-1.5 text-xs font-bold text-[#145A41]">
+                  <CheckCircle2 className="h-4 w-4" />
+                  Selected charity
+                </div>
+              ) : null}
+              <Button
+                onClick={() => void handleSave()}
+                disabled={isLoading || isSaving || charities.length === 0}
+                className="mt-4 w-full bg-[#FFD95A] hover:bg-[#F4C430] text-[#145A41] font-extrabold rounded-xl h-12 text-sm sm:text-base"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  "Save Preferences"
+                )}
+              </Button>
             </div>
-            <Button
-              onClick={() => void handleSave()}
-              disabled={isLoading || isSaving || charities.length === 0}
-              className="w-full md:w-auto bg-[#FFD95A] hover:bg-[#F4C430] text-[#145A41] font-extrabold px-8 py-6 rounded-xl shadow-lg text-lg"
-            >
-              {isSaving ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Save Preferences"
-              )}
-            </Button>
           </div>
         </Card>
       </motion.div>
@@ -189,7 +197,7 @@ export function Charity() {
         </div>
       ) : null}
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap gap-2">
           {categories.map((category) => {
             const Icon = category.icon;
@@ -198,7 +206,7 @@ export function Charity() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all sm:px-5 ${
                   selectedCategory === category.id
                     ? "bg-gray-900 text-white shadow-md"
                     : "bg-white text-gray-600 border border-gray-200 hover:border-gray-300"
@@ -210,7 +218,7 @@ export function Charity() {
           })}
         </div>
 
-        <div className="relative w-full md:w-72">
+        <div className="relative w-full lg:w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <Input
             placeholder="Search charities..."
@@ -229,7 +237,7 @@ export function Charity() {
           </div>
         </Card>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filteredCharities.map((charity) => {
               const Icon = getCategoryIcon(charity.category);
@@ -247,53 +255,61 @@ export function Charity() {
                   <Card
                     className={`h-full flex flex-col overflow-hidden rounded-3xl cursor-pointer group transition-all duration-300 ${
                       isSelected
-                        ? "border-2 border-[#145A41] ring-4 ring-[#145A41]/10 shadow-lg"
+                        ? "border-2 border-[#145A41] ring-2 ring-[#145A41]/10 shadow-lg bg-[#FCFDFB]"
                         : "border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-1 bg-white"
                     }`}
                     onClick={() => setSelectedCharity(charity.id)}
                   >
-                    <div className="h-32 relative overflow-hidden bg-gradient-to-br from-[#145A41] to-[#0B3D2E] p-6 text-white flex items-end">
-                      <div className="absolute top-4 left-4">
-                        <div className="px-3 py-1 bg-white/10 backdrop-blur-md text-white text-xs font-bold rounded-lg uppercase tracking-wider shadow-sm">
+                    <div className="relative flex h-32 items-end overflow-hidden bg-gradient-to-br from-[#145A41] to-[#0B3D2E] p-5 sm:p-6 text-white">
+                      <div className="absolute left-4 top-4">
+                        <div className="rounded-lg bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-md shadow-sm">
                           {charity.category}
                         </div>
                       </div>
-                      <div className="absolute top-4 right-4 flex items-center gap-2">
+                      <div className="absolute right-4 top-4 flex items-center gap-2">
                         {charity.featured ? (
                           <div className="bg-[#FFD95A] text-[#145A41] p-2 rounded-full shadow-lg">
                             <Star className="w-4 h-4 fill-current" />
                           </div>
                         ) : null}
                         {isSelected ? (
-                          <div className="bg-white text-[#145A41] p-2 rounded-full shadow-lg">
-                            <CheckCircle2 className="w-5 h-5" />
+                          <div className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-[#145A41] shadow-sm">
+                            <CheckCircle2 className="h-3.5 w-3.5" />
+                            Selected
                           </div>
                         ) : null}
                       </div>
-                      <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
                         <Icon className="w-7 h-7 text-[#FFD95A]" />
                       </div>
                     </div>
 
-                    <div className="p-6 flex flex-col flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-3">{charity.name}</h3>
-                      <p className="text-gray-500 text-sm mb-6 flex-1">
+                    <div className="flex flex-1 flex-col p-5 sm:p-6">
+                      <h3 className="mb-3 text-lg sm:text-xl font-bold text-gray-900 leading-snug">
+                        {charity.name}
+                      </h3>
+                      <p className="mb-5 flex-1 text-sm leading-6 text-gray-500">
                         Active GolfGive charity partner in the {charity.category.toLowerCase()} category.
                       </p>
-                      <Button
-                        variant={isSelected ? "default" : "outline"}
-                        className={`w-full font-bold rounded-xl h-11 ${
-                          isSelected
-                            ? "bg-[#145A41] hover:bg-[#0B3D2E] text-white"
-                            : "border-gray-200 text-gray-700"
-                        }`}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          setSelectedCharity(charity.id);
-                        }}
-                      >
-                        {isSelected ? "Selected" : "Select Charity"}
-                      </Button>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">
+                          {charity.featured ? "Featured partner" : "Charity partner"}
+                        </span>
+                        <Button
+                          variant={isSelected ? "default" : "outline"}
+                          className={`h-10 rounded-xl px-4 text-sm font-bold ${
+                            isSelected
+                              ? "bg-[#145A41] hover:bg-[#0B3D2E] text-white"
+                              : "border-gray-200 text-gray-700"
+                          }`}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            setSelectedCharity(charity.id);
+                          }}
+                        >
+                          {isSelected ? "Currently Selected" : "Select"}
+                        </Button>
+                      </div>
                     </div>
                   </Card>
                 </motion.div>
